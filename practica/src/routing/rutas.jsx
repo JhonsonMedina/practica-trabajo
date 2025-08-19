@@ -8,7 +8,9 @@ import { Lateral } from "../componentes/layout/lateral.jsx";
 import { Footer } from "../componentes/layout/footer.jsx";
 import { TodoForm } from "../componentes/pages/todoform/TodoForm.jsx";
 import { TodoFilters } from "../componentes/pages/todofilters/TodoFilters.jsx";
-import {TodoItem} from "../componentes/pages/todoitem/TodoItem.jsx"
+import { ArticulosList } from "../componentes/pages/articulos/ArticulosList.jsx";
+
+
 
 export const Rutas = () =>  {
 
@@ -26,7 +28,7 @@ export const Rutas = () =>  {
 
       <Route  path="/"  element= {<TodoList />}/>  
       <Route  path="/todolist"  element= {<TodoList />}/> 
-      <Route  path="/todoItem"  element= {<TodoItem />}/> 
+      <Route  path="/articulos"  element= {<ArticulosList />}/> 
       <Route  path="/todoform"  element= {<TodoForm />}/> 
       <Route  path="/todofilters"  element= {<TodoFilters />}/> 
    </Routes>

@@ -17,3 +17,10 @@ Frontend
 
 npm i bootstrap@5.3.7
 
+Backend
+
+npm init -y
+
+npm i express mysql2 dotenv
+
+npm i cors

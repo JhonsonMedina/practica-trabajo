@@ -2,8 +2,8 @@ const pool = require('../db');
 
 async function getArticulos(req, res) {
   try {
-    const [rows] = await pool.query('SELECT * FROM items ORDER BY created_at DESC');
-    res.json({ status: 'success', items: rows });
+    const [rows] = await pool.query('SELECT * FROM items');
+    res.json({ status: 'success', articulos: rows });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: 'error', message: err.message });

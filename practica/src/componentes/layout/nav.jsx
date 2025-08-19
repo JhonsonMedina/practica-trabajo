@@ -18,7 +18,7 @@ export const Nav = () => {
           <NavLink to="/todolist" className="nav-link active" aria-current="page" href="#">Home</NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/todoitem" className="nav-link" href="#">Features</NavLink>
+          <NavLink to="/articulos" className="nav-link" href="#">Features</NavLink>
         </li>
         <li className="nav-item">
           <NavLink to="/todoform" className="nav-link" href="#">Pricing</NavLink>
