@@ -12,14 +12,14 @@ async function getArticulos(req, res) {
 
 async function createArticulo(req, res) {
   try {
-    const { titulo, contenido, fechaIngreso, estado } = req.body;
+    const { titulo, contenido, fechaIngreso, vencimiento, estado} = req.body;
     if (!titulo || !contenido) {
       return res.status(400).json({ status: 'error', message: 'faltan campos' });
     }
 
     const [r] = await pool.query(
-      'INSERT INTO items (titulo, contenido, fechaIngreso, estado) VALUES (?, ?, ?, ?)',
-      [titulo, contenido, fechaIngreso ?? null, estado ?? false]
+      'INSERT INTO items (titulo, contenido, fechaIngreso, vencimiento, estado) VALUES (?, ?, ?, ?,?)',
+      [titulo, contenido, fechaIngreso ?? null,vencimiento ?? null, estado ?? false]
     );
 
     const [rows] = await pool.query('SELECT * FROM items WHERE id = ?', [r.insertId]);
@@ -33,11 +33,11 @@ async function createArticulo(req, res) {
 async function updateArticulo(req, res) {
   try {
     const { id } = req.params;
-    const { titulo, contenido, fechaIngreso, estado } = req.body;
+    const { titulo, contenido, fechaIngreso, vencimiento, estado } = req.body;
 
     const [r] = await pool.query(
-      'UPDATE items SET titulo = ?, contenido = ?, fechaIngreso = ?, estado = ? WHERE id = ?',
-      [titulo, contenido, fechaIngreso ?? null, estado ?? false, id]
+      'UPDATE items SET titulo = ?, contenido = ?, fechaIngreso = ?, vencimiento = ?, estado = ? WHERE id = ?',
+      [titulo, contenido, fechaIngreso ?? null, vencimiento ?? null, estado ?? false, id]
     );
 
     if (r.affectedRows === 0) {

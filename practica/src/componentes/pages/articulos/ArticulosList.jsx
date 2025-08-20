@@ -6,7 +6,8 @@ export const ArticulosList = () => {
   const [editTitulo, setEditTitulo] = useState("");
   const [editContenido, setEditContenido] = useState("");
   const [editFechaIngreso, setEditFechaIngreso] = useState("");
-  const [editEstado, setEditEstado] = useState(false); // nuevo
+  const [editVencimiento, setEditVencimiento] = useState(""); // nuevo
+  const [editEstado, setEditEstado] = useState(false);
 
   useEffect(() => {
     conseguirArticulos();
@@ -25,7 +26,15 @@ export const ArticulosList = () => {
     }
   };
 
-  const empezarEditar = (id, currentTitulo, currentContenido, currentFechaIngreso, currentEstado) => {
+
+  const empezarEditar = (
+    id,
+    currentTitulo,
+    currentContenido,
+    currentFechaIngreso,
+    currentVencimiento,
+    currentEstado
+  ) => {
     setEditingId(id);
     setEditTitulo(currentTitulo);
     setEditContenido(currentContenido);
@@ -33,6 +42,12 @@ export const ArticulosList = () => {
       ? new Date(currentFechaIngreso).toISOString().slice(0, 10)
       : "";
     setEditFechaIngreso(fechaISO);
+
+    const venc = currentVencimiento || "";
+    setEditVencimiento(venc
+      ? new Date(venc).toISOString().slice(0, 10)
+      : "");
+
     setEditEstado(!!currentEstado);
   };
 
@@ -45,6 +60,7 @@ export const ArticulosList = () => {
           titulo: editTitulo,
           contenido: editContenido,
           fechaIngreso: editFechaIngreso || null,
+          vencimiento: editVencimiento || null,
           estado: editEstado
         }),
       });
@@ -68,6 +84,7 @@ export const ArticulosList = () => {
                     titulo: editTitulo,
                     contenido: editContenido,
                     fechaIngreso: editFechaIngreso || null,
+                    vencimiento: editVencimiento || null,
                     estado: editEstado
                   }
                 : a;
@@ -113,6 +130,18 @@ export const ArticulosList = () => {
     }
   };
 
+  
+  const formatearVencimiento = (v) => {
+    if (!v) return "Sin vencimiento";
+    try {
+      const d = new Date(v);
+      if (Number.isNaN(d.getTime())) return v;
+      return d.toLocaleDateString();
+    } catch {
+      return v;
+    }
+  };
+
   return (
     <>
       {articulos.length > 0 ? (
@@ -120,11 +149,11 @@ export const ArticulosList = () => {
           const idItem = articulo.id !== undefined ? articulo.id : articulo._id;
           const isEditing = editingId === idItem;
           return (
-            <article key={idItem} className="articulo-item card mb-3">
-              <div className="card-body">
+            <article key={idItem} className="articulo-item card mb-4">
+              <div className="card-body mb-4">
                 {isEditing ? (
-                  <div className="mb-3 row g-2 align-items-center">
-                    <label className="col-12 col-sm-2 col-form-label">Título</label>
+                  <div className="mb-4 row g-2 align-items-center">
+                    <label className="col-12 col-sm-2 col-form-label ">Título</label>
                     <div className="col-12 col-sm-10">
                       <input
                         className="form-control"
@@ -173,6 +202,24 @@ export const ArticulosList = () => {
 
                 {isEditing ? (
                   <div className="mb-3 row g-2 align-items-center">
+                    <label className="col-12 col-sm-2 col-form-label">Vencimiento</label>
+                    <div className="col-12 col-sm-10">
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={editVencimiento}
+                        onChange={(e) => setEditVencimiento(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-muted">
+                    Vencimiento: {formatearVencimiento(articulo.vencimiento)}
+                  </p>
+                )}
+
+                {isEditing ? (
+                  <div className="mb-3 row g-2 align-items-center">
                     <label className="col-12 col-sm-2 col-form-label">Estado</label>
                     <div className="col-12 col-sm-10">
                       <label>
@@ -181,13 +228,13 @@ export const ArticulosList = () => {
                           checked={editEstado}
                           onChange={(e) => setEditEstado(e.target.checked)}
                         />{" "}
-                        Encendido
+                        Completado
                       </label>
                     </div>
                   </div>
                 ) : (
                   <p className="text-muted">
-                    Estado: {articulo.estado ? "Encendido" : "Apagado"}
+                    Estado: {articulo.estado ? "Completado" : "No-Completado"}
                   </p>
                 )}
 
@@ -195,28 +242,23 @@ export const ArticulosList = () => {
                   <div className="col-auto">
                     {isEditing ? (
                       <>
-                        <button
-                          className="btn btn-primary"
-                          onClick={() => actualizarArticulo(idItem)}
-                        >
+                        <button className="btn btn-primary" onClick={() => actualizarArticulo(idItem)}>
                           Guardar
                         </button>
-                        <button
-                          className="btn btn-secondary"
-                          onClick={() => setEditingId(null)}
-                        >
+                        <button className="btn btn-secondary" onClick={() => setEditingId(null)}>
                           Cancelar
                         </button>
                       </>
                     ) : (
                       <button
-                        className="btn btn-outline-primary"
+                        className="btn  bg-success text-white"
                         onClick={() =>
                           empezarEditar(
                             idItem,
                             articulo.titulo,
                             articulo.contenido,
                             articulo.fechaIngreso,
+                            articulo.vencimiento || articulo.fechaVencimiento,
                             articulo.estado
                           )
                         }
@@ -227,10 +269,7 @@ export const ArticulosList = () => {
                   </div>
 
                   <div className="col-auto">
-                    <button
-                      className="btn btn-outline-danger"
-                      onClick={() => borrarArticulo(idItem)}
-                    >
+                    <button className="btn bg-danger text-white" onClick={() => borrarArticulo(idItem)}>
                       Borrar
                     </button>
                   </div>

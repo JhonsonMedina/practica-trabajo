@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
-export const Lista = () => {
+export const ArticulosCompletados = () => {
   const [articulos, setArticulos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     conseguirArticulos();
@@ -13,10 +14,18 @@ export const Lista = () => {
       const peticion = await fetch(url, { method: "GET" });
       const datos = await peticion.json();
       if (datos.status === "success") {
-        setArticulos(datos.articulos || []);
+        const filtrados = (datos.articulos || []).filter(
+          (a) => a.estado === true || a.estado === 1
+        );
+        setArticulos(filtrados);
+      } else {
+        setArticulos([]);
       }
     } catch (e) {
       console.error(e);
+      setArticulos([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -31,7 +40,8 @@ export const Lista = () => {
     }
   };
 
-   const formatearVencimiento = (v) => {
+  const formatearVencimiento = (a) => {
+    const v = a?.vencimiento;
     if (!v) return "Sin vencimiento";
     try {
       const d = new Date(v);
@@ -41,6 +51,8 @@ export const Lista = () => {
       return v;
     }
   };
+
+  if (loading) return <p>Cargando...</p>;
 
   return (
     <>
@@ -56,17 +68,17 @@ export const Lista = () => {
                   Fecha de ingreso: {formatearFecha(articulo.fechaIngreso)}
                 </p>
                 <p className="text-muted">
-                  vencimiento: {formatearVencimiento(articulo.vencimiento)}
+                  Vencimiento: {formatearVencimiento(articulo)}
                 </p>
                 <p className="text-muted">
-                  Estado: {articulo.estado ? "Completado" : "No-Completado"}
+                  Estado: Completado
                 </p>
               </div>
             </article>
           );
         })
       ) : (
-        <h1 className="text-center">No hay Articulos</h1>
+        <h1 className="text-center">No hay Articulos completados</h1>
       )}
     </>
   );

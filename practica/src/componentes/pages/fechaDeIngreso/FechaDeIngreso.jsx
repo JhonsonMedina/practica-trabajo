@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const Lista = () => {
+export const FechaDeIngreso = () => {
   const [articulos, setArticulos] = useState([]);
 
   useEffect(() => {
@@ -13,7 +13,16 @@ export const Lista = () => {
       const peticion = await fetch(url, { method: "GET" });
       const datos = await peticion.json();
       if (datos.status === "success") {
-        setArticulos(datos.articulos || []);
+        const articulosObtenidos = datos.articulos || [];
+
+        
+        const ordenados = articulosObtenidos.slice().sort((a, b) => {
+          const ta = a.fechaIngreso ? new Date(a.fechaIngreso).getTime() : 0;
+          const tb = b.fechaIngreso ? new Date(b.fechaIngreso).getTime() : 0;
+          return tb - ta; 
+        });
+
+        setArticulos(ordenados);
       }
     } catch (e) {
       console.error(e);
@@ -31,17 +40,6 @@ export const Lista = () => {
     }
   };
 
-   const formatearVencimiento = (v) => {
-    if (!v) return "Sin vencimiento";
-    try {
-      const d = new Date(v);
-      if (Number.isNaN(d.getTime())) return v;
-      return d.toLocaleDateString();
-    } catch {
-      return v;
-    }
-  };
-
   return (
     <>
       {articulos.length > 0 ? (
@@ -54,9 +52,6 @@ export const Lista = () => {
                 <p className="card-text">{articulo.contenido}</p>
                 <p className="text-muted">
                   Fecha de ingreso: {formatearFecha(articulo.fechaIngreso)}
-                </p>
-                <p className="text-muted">
-                  vencimiento: {formatearVencimiento(articulo.vencimiento)}
                 </p>
                 <p className="text-muted">
                   Estado: {articulo.estado ? "Completado" : "No-Completado"}

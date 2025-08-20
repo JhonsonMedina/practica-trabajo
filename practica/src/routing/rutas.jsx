@@ -1,14 +1,15 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
-import { TodoList } from "../componentes/pages/todolist/TodoList.jsx";
-import { Header } from "../componentes/layout/header.jsx";
-import { Nav } from "../componentes/layout/nav.jsx";
-import { Lateral } from "../componentes/layout/lateral.jsx";
-import { Footer } from "../componentes/layout/footer.jsx";
-import { TodoForm } from "../componentes/pages/todoform/TodoForm.jsx";
+import { Header } from "../componentes/layout/header/header.jsx";
+import { Nav } from "../componentes/layout/navbar/nav.jsx";
+import { Footer } from "../componentes/layout/footer/footer.jsx";
+import { ArticulosCompletados } from "../componentes/pages/articulosCompletados/ArticulosCompletados.jsx";
 import { Lista } from "../componentes/pages/lista/Lista.jsx";
 import { ArticulosList } from "../componentes/pages/articulos/ArticulosList.jsx";
+import { ArticulosNoCompletados } from "../componentes/pages/articulosNoCompletados/ArticulosNoCompletados.jsx";
+import { FechaDeIngreso } from "../componentes/pages/fechaDeIngreso/FechadeIngreso.jsx";
+
 
 function AppLayout() {
   return (
@@ -18,7 +19,7 @@ function AppLayout() {
       <section id="content" className="content">
         <Outlet />
       </section>
-      <Lateral />
+  
       <Footer />
     </>
   );
@@ -29,11 +30,12 @@ const router = createBrowserRouter(
     {
       element: <AppLayout />,
       children: [
-        { path: "/", element: <TodoList /> },
-        { path: "/todolist", element: <TodoList /> },
+        { path: "/", element: <ArticulosList /> },
         { path: "/articulos", element: <ArticulosList /> },
-        { path: "/todoform", element: <TodoForm /> },
+        { path: "/articulosCompletados", element: <ArticulosCompletados /> },
+         { path: "/articulosNoCompletados", element: <ArticulosNoCompletados /> },
         { path: "/lista", element: <Lista /> },
+        { path: "/fechaDeIngreso", element: <FechaDeIngreso/> },
       ],
     },
   ],
