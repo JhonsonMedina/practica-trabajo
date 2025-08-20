@@ -6,6 +6,7 @@ export const ArticulosList = () => {
   const [editTitulo, setEditTitulo] = useState("");
   const [editContenido, setEditContenido] = useState("");
   const [editFechaIngreso, setEditFechaIngreso] = useState("");
+  const [editEstado, setEditEstado] = useState(false); // nuevo
 
   useEffect(() => {
     conseguirArticulos();
@@ -24,7 +25,7 @@ export const ArticulosList = () => {
     }
   };
 
-  const empezarEditar = (id, currentTitulo, currentContenido, currentFechaIngreso) => {
+  const empezarEditar = (id, currentTitulo, currentContenido, currentFechaIngreso, currentEstado) => {
     setEditingId(id);
     setEditTitulo(currentTitulo);
     setEditContenido(currentContenido);
@@ -32,6 +33,7 @@ export const ArticulosList = () => {
       ? new Date(currentFechaIngreso).toISOString().slice(0, 10)
       : "";
     setEditFechaIngreso(fechaISO);
+    setEditEstado(!!currentEstado);
   };
 
   const actualizarArticulo = async (id) => {
@@ -43,6 +45,7 @@ export const ArticulosList = () => {
           titulo: editTitulo,
           contenido: editContenido,
           fechaIngreso: editFechaIngreso || null,
+          estado: editEstado
         }),
       });
       const data = await res.json();
@@ -65,6 +68,7 @@ export const ArticulosList = () => {
                     titulo: editTitulo,
                     contenido: editContenido,
                     fechaIngreso: editFechaIngreso || null,
+                    estado: editEstado
                   }
                 : a;
             })
@@ -167,6 +171,26 @@ export const ArticulosList = () => {
                   </p>
                 )}
 
+                {isEditing ? (
+                  <div className="mb-3 row g-2 align-items-center">
+                    <label className="col-12 col-sm-2 col-form-label">Estado</label>
+                    <div className="col-12 col-sm-10">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={editEstado}
+                          onChange={(e) => setEditEstado(e.target.checked)}
+                        />{" "}
+                        Encendido
+                      </label>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-muted">
+                    Estado: {articulo.estado ? "Encendido" : "Apagado"}
+                  </p>
+                )}
+
                 <div className="row g-2 align-items-center">
                   <div className="col-auto">
                     {isEditing ? (
@@ -192,7 +216,8 @@ export const ArticulosList = () => {
                             idItem,
                             articulo.titulo,
                             articulo.contenido,
-                            articulo.fechaIngreso
+                            articulo.fechaIngreso,
+                            articulo.estado
                           )
                         }
                       >

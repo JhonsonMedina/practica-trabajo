@@ -12,18 +12,18 @@ async function getArticulos(req, res) {
 
 async function createArticulo(req, res) {
   try {
-    const { titulo, contenido, fechaIngreso } = req.body;
+    const { titulo, contenido, fechaIngreso, estado } = req.body;
     if (!titulo || !contenido) {
       return res.status(400).json({ status: 'error', message: 'faltan campos' });
     }
 
-const [r] = await pool.query(
-  'INSERT INTO items (titulo, contenido, fechaIngreso) VALUES (?, ?, ?)',
-  [titulo, contenido, fechaIngreso ?? null]
-);
+    const [r] = await pool.query(
+      'INSERT INTO items (titulo, contenido, fechaIngreso, estado) VALUES (?, ?, ?, ?)',
+      [titulo, contenido, fechaIngreso ?? null, estado ?? false]
+    );
 
-const [rows] = await pool.query('SELECT * FROM items WHERE id = ?', [r.insertId]);
-res.status(201).json({ status: 'success', item: rows[0] });
+    const [rows] = await pool.query('SELECT * FROM items WHERE id = ?', [r.insertId]);
+    res.status(201).json({ status: 'success', item: rows[0] });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: 'error', message: err.message });
@@ -33,24 +33,25 @@ res.status(201).json({ status: 'success', item: rows[0] });
 async function updateArticulo(req, res) {
   try {
     const { id } = req.params;
-    const { titulo, contenido, fechaIngreso } = req.body;
+    const { titulo, contenido, fechaIngreso, estado } = req.body;
 
-const [r] = await pool.query(
-  'UPDATE items SET titulo = ?, contenido = ?, fechaIngreso = ? WHERE id = ?',
-  [titulo, contenido, fechaIngreso ?? null, id]
-);
+    const [r] = await pool.query(
+      'UPDATE items SET titulo = ?, contenido = ?, fechaIngreso = ?, estado = ? WHERE id = ?',
+      [titulo, contenido, fechaIngreso ?? null, estado ?? false, id]
+    );
 
-if (r.affectedRows === 0) {
-  return res.status(404).json({ status: 'error', message: 'No encontrado' });
-}
+    if (r.affectedRows === 0) {
+      return res.status(404).json({ status: 'error', message: 'No encontrado' });
+    }
 
-const [rows] = await pool.query('SELECT * FROM items WHERE id = ?', [id]);
-res.json({ status: 'success', item: rows[0] });
+    const [rows] = await pool.query('SELECT * FROM items WHERE id = ?', [id]);
+    res.json({ status: 'success', item: rows[0] });
   } catch (err) {
     console.error(err);
     res.status(400).json({ status: 'error', message: err.message });
   }
 }
+
 
 async function deleteArticulo(req, res) {
   try {

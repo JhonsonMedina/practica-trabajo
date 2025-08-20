@@ -14,9 +14,7 @@ export const Nav = () => {
     </button>
     <div className="collapse navbar-collapse" id="navbarNavDropdown">
       <ul className="navbar-nav">
-        <li className="nav-item">
-          <NavLink to="/todolist" className="nav-link active" aria-current="page" href="#">Home</NavLink>
-        </li>
+        
         <li className="nav-item">
           <NavLink to="/articulos" className="nav-link" href="#">Articulos</NavLink>
         </li>
