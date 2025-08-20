@@ -7,7 +7,7 @@ import { Nav } from "../componentes/layout/nav.jsx";
 import { Lateral } from "../componentes/layout/lateral.jsx";
 import { Footer } from "../componentes/layout/footer.jsx";
 import { TodoForm } from "../componentes/pages/todoform/TodoForm.jsx";
-import { TodoFilters } from "../componentes/pages/todofilters/TodoFilters.jsx";
+import { Lista} from "../componentes/pages/lista/Lista.jsx";
 import { ArticulosList } from "../componentes/pages/articulos/ArticulosList.jsx";
 
 
@@ -30,7 +30,7 @@ export const Rutas = () =>  {
       <Route  path="/todolist"  element= {<TodoList />}/> 
       <Route  path="/articulos"  element= {<ArticulosList />}/> 
       <Route  path="/todoform"  element= {<TodoForm />}/> 
-      <Route  path="/todofilters"  element= {<TodoFilters />}/> 
+      <Route  path="/lista"  element= {<Lista />}/> 
    </Routes>
 
 </section>
