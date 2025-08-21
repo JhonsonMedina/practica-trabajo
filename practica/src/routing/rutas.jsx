@@ -10,7 +10,6 @@ import { ArticulosList } from "../componentes/pages/articulos/ArticulosList.jsx"
 import { ArticulosNoCompletados } from "../componentes/pages/articulosNoCompletados/ArticulosNoCompletados.jsx";
 import { FechaDeIngreso } from "../componentes/pages/fechaDeIngreso/FechadeIngreso.jsx";
 
-
 function AppLayout() {
   return (
     <>
@@ -19,7 +18,6 @@ function AppLayout() {
       <section id="content" className="content">
         <Outlet />
       </section>
-  
       <Footer />
     </>
   );
@@ -33,9 +31,9 @@ const router = createBrowserRouter(
         { path: "/", element: <ArticulosList /> },
         { path: "/articulos", element: <ArticulosList /> },
         { path: "/articulosCompletados", element: <ArticulosCompletados /> },
-         { path: "/articulosNoCompletados", element: <ArticulosNoCompletados /> },
+        { path: "/articulosNoCompletados", element: <ArticulosNoCompletados /> },
         { path: "/lista", element: <Lista /> },
-        { path: "/fechaDeIngreso", element: <FechaDeIngreso/> },
+        { path: "/fechaDeIngreso", element: <FechaDeIngreso /> },
       ],
     },
   ],
@@ -57,3 +55,4 @@ export const Rutas = () => {
     />
   );
 };
+

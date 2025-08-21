@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import './ArticulosList.css'
 
 export const ArticulosList = () => {
   const [articulos, setArticulos] = useState([]);
@@ -149,10 +150,12 @@ export const ArticulosList = () => {
           const idItem = articulo.id !== undefined ? articulo.id : articulo._id;
           const isEditing = editingId === idItem;
           return (
-            <article key={idItem} className="articulo-item card mb-4">
-              <div className="card-body mb-4">
+
+            
+            <article key={idItem} className=" card mb-4 col-md-8 offset-md-2 bg-primary-subtle">
+              <div className="card-body mb-4 ">
                 {isEditing ? (
-                  <div className="mb-4 row g-2 align-items-center">
+                  <div className=" mb-4 row g-2 align-items-center">
                     <label className="col-12 col-sm-2 col-form-label ">Título</label>
                     <div className="col-12 col-sm-10">
                       <input
@@ -251,7 +254,7 @@ export const ArticulosList = () => {
                       </>
                     ) : (
                       <button
-                        className="btn  bg-success text-white"
+                        className="btn btn-success text-white "
                         onClick={() =>
                           empezarEditar(
                             idItem,
@@ -269,7 +272,7 @@ export const ArticulosList = () => {
                   </div>
 
                   <div className="col-auto">
-                    <button className="btn bg-danger text-white" onClick={() => borrarArticulo(idItem)}>
+                    <button className="btn btn-danger text-white " onClick={() => borrarArticulo(idItem)}>
                       Borrar
                     </button>
                   </div>
